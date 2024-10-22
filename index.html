@@ -19,13 +19,14 @@
       <section class="content">
         <div>
           <input type='text' id='taskInput' placeholder="Добавьте новую задачу">
-          <button id="add">Добавить</button>
+          <!-- <button id="add">Добавить</button> -->
+          <button onclick="addTask()">Добавить задачу</button>
         </div>
 
         <div class="mainMenu">
-          <button onclick="addTask()">Показать все</button>
-          <button onclick="addTask()">Показать выполенные</button>
-          <button onclick="addTask()">Показать не выполенные</button>
+          <button onclick="displayTasks('all')">Показать все</button>
+          <button onclick="displayTasks('выполнено')">Показать выполенные</button>
+          <button onclick="displayTasks('не выполнено')">Показать не выполенные</button>
           <input type='text' id='filterInput' placeholder="Фильтр задач" oninput="filterTasks()">
         </div>
 
@@ -34,7 +35,7 @@
           <!-- <button id="change">Изменить статус</button> -->
           <!-- <button id="delete">Удалить</button> -->
           <!-- <button id="update">Обновить список</button> -->
-          <ul></ul>
+          <ul id='taskList'></ul>
         </div>
           <script src="script.js"></script>
       </section>
