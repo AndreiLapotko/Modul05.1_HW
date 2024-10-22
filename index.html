@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Bucket List</h1>
+    </header>
+
+    <main>
+      <section class="intro">
+        <h2>Добро пожаловать на наш сайт!</h2>
+      </section>
+
+      <section class="content">
+        <div>
+          <input type='text' id='taskInput' placeholder="Добавьте новую задачу">
+          <button id="add">Добавить</button>
+        </div>
+
+        <div class="mainMenu">
+          <button onclick="addTask()">Показать все</button>
+          <button onclick="addTask()">Показать выполенные</button>
+          <button onclick="addTask()">Показать не выполенные</button>
+          <input type='text' id='filterInput' placeholder="Фильтр задач" oninput="filterTasks()">
+        </div>
+
+        <div class="tasks">
+          <h3>Список задач</h3>
+          <!-- <button id="change">Изменить статус</button> -->
+          <!-- <button id="delete">Удалить</button> -->
+          <!-- <button id="update">Обновить список</button> -->
+          <ul></ul>
+        </div>
+          <script src="script.js"></script>
+      </section>
+    </main>
+
+    <footer>
+      <cite>
+        <p>© 2024 Простой сайт. Все права защищены.</p>
+      </cite>
+    </footer>
+  </body>
+</html>
