@@ -1,78 +1,106 @@
 let tasksList = [];
 
+// let name = taskInput.value.trim();
+
+const addBtn = document.getElementById("addBtn");
+addBtn.addEventListener("click", addTask);
+
 document.addEventListener("DOMContentLoaded", () => {
-  tasksList = JSON.parse(localStorage.getItem("tasks"));
-  listUpdate();
+  tasksList = JSON.parse(localStorage.getItem("tasks")) || []; // добавил [] для того, чтобы не было ошибки при считывании из пустого localStorage
+  if (tasksList) {
+    listUpdate(tasksList);
+  }
 });
 
 function addTask() {
   let taskInput = document.getElementById("taskInput");
   let name = taskInput.value.trim();
-  if (name) {
-    if (doesTaskExist(name)) {
-      alert("Задача с таким названием уже существует");
-    } else {
-      let newTask = {
-        name: name,
-        completed: false,
-      };
-      tasksList.push(newTask);
-      saveTasks();
-      taskInput.value = "";
-      listUpdate();
-    }
-  } else {
+
+  if (!name) {
     alert("Вы забыли назвать задачу!");
+    return;
+  }
+
+  if (tasksList && doesTaskExist(name, tasksList)) {
+    alert("Задача с таким названием уже существует");
+    taskInput.value = "";
+  } else {
+    let newTask = {
+      name: name,
+      completed: false,
+    };
+
+    tasksList.push(newTask);
+    taskInput.value = "";
+    saveTasks(tasksList);
+    listUpdate(tasksList);
   }
 }
 
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasksList));
+function saveTasks(list) {
+  localStorage.setItem("tasks", JSON.stringify(list));
 }
 
-function doesTaskExist(name) {
-  if (tasksList.findIndex((item) => item.name == name) === -1) {
+function doesTaskExist(name, list) {
+  if (list.findIndex((item) => item.name == name) === -1) {
     return false;
   } else {
     return true;
   }
 }
 
-function editTask(button) {
-  const li = button.parentElement;
-  const name = li.querySelector("span").textContent;
-  const newName = prompt("Введите новое значение задачи", name);
+// function editTask(button) {
+//   const li = button.parentElement;
+//   const name = li.querySelector("span").textContent;
+//   const newName = prompt("Введите новое значение задачи", name);
 
-  if (newName !== null && newName !== "") {
-    if (doesTaskExist(newName)) {
-      alert("Задача с таким названием уже существует");
-    } else {
-      tasksList[tasksList.findIndex((item) => item.name == name)].name =
-        newName.trim();
-      saveTasks();
-      listUpdate();
-    }
-  }
-}
+//   if (newName !== null && newName !== "") {
+//     if (doesTaskExist(newName, tasksList)) {
+//       alert("Задача с таким названием уже существует");
+//     } else {
+//       tasksList[tasksList.findIndex((item) => item.name == name)].name =
+//         newName.trim();
+//       saveTasks(tasksList);
+//       listUpdate(tasksList);
+//     }
+//   }
+// }
+
+// function editTask(name) {
+//   const li = button.parentElement;
+//   const name = li.querySelector("span").textContent;
+//   const newName = prompt("Введите новое значение задачи", name);
+
+//   if (newName !== null && newName !== "") {
+//     if (doesTaskExist(newName, tasksList)) {
+//       alert("Задача с таким названием уже существует");
+//     } else {
+//       tasksList[tasksList.findIndex((item) => item.name == name)].name =
+//         newName.trim();
+//       saveTasks(tasksList);
+//       listUpdate(tasksList);
+//     }
+//   }
+// }
 
 function deleteTask(name) {
-  if (!doesTaskExist(name)) {
+  if (!doesTaskExist(name, tasksList)) {
     alert("Задачи с таким названием нет в списке!");
   } else {
     tasksList = tasksList.filter((item) => item.name !== name);
-    saveTasks();
-    listUpdate();
+    saveTasks(tasksList);
+    listUpdate(tasksList);
   }
 }
 
 function changeStatus(name) {
-  if (!doesTaskExist(name)) {
+  if (!doesTaskExist(name, tasksList)) {
     alert("Задачи с таким названием нет в списке!");
   } else {
     tasksList[tasksList.findIndex((item) => item.name == name)].completed =
       !tasksList[tasksList.findIndex((item) => item.name == name)].completed;
-    listUpdate();
-    saveTasks();
+    listUpdate(tasksList);
+    saveTasks(tasksList);
   }
 }
 
@@ -83,7 +111,6 @@ function filterTasks() {
 
   Array.from(taskList.children).forEach((li) => {
     const taskText = li.querySelector("span").textContent.toLowerCase();
-    taskText.addEventListener("dblclick", () => { });
     if (taskText.includes(filterText)) {
       li.style.display = "";
     } else {
@@ -107,13 +134,15 @@ function displayTasks(filter = "all") {
   });
 }
 
-
-function listUpdate() {
-  let array = tasksList;
-  const html = array
+function listUpdate(list) {
+  const html = list
     .map(
       (item) => `<li>
-      <span id='name' style='cursor: pointer; ${item.completed ? "color: green; text-decoration: line-through;" : "color: red"}' ondblclick="editTask(this)">${item.name}</span>
+      <span id='name' style='cursor: pointer; ${
+        item.completed
+          ? "color: green; text-decoration: line-through;"
+          : "color: red"
+      }' ondblclick="editTask(this)">${item.name}</span>
       <span id='status'>${item.completed ? "выполнено" : "не выполнено"}</span>
       <button onclick="editTask(this)">Редактировать задачу</button>
       <button onclick="changeStatus('${item.name}')">Изменить статус</button>
