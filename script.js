@@ -66,22 +66,19 @@ function doesTaskExist(name, list) {
 //   }
 // }
 
-// function editTask(name) {
-//   const li = button.parentElement;
-//   const name = li.querySelector("span").textContent;
-//   const newName = prompt("Введите новое значение задачи", name);
-
-//   if (newName !== null && newName !== "") {
-//     if (doesTaskExist(newName, tasksList)) {
-//       alert("Задача с таким названием уже существует");
-//     } else {
-//       tasksList[tasksList.findIndex((item) => item.name == name)].name =
-//         newName.trim();
-//       saveTasks(tasksList);
-//       listUpdate(tasksList);
-//     }
-//   }
-// }
+function editTask(name) {
+  const newName = prompt("Введите новое значение задачи", name);
+  if (newName !== null && newName !== "") {
+    if (doesTaskExist(newName, tasksList)) {
+      alert("Задача с таким названием уже существует");
+    } else {
+      tasksList[tasksList.findIndex((item) => item.name == name)].name =
+        newName.trim();
+      saveTasks(tasksList);
+      listUpdate(tasksList);
+    }
+  }
+}
 
 function deleteTask(name) {
   if (!doesTaskExist(name, tasksList)) {
@@ -104,11 +101,26 @@ function changeStatus(name) {
   }
 }
 
+// function filterTasks() {
+//   const filterInput = document.getElementById("filterInput");
+//   const filterText = filterInput.value.trim().toLowerCase();
+//   const taskList = document.getElementById("taskList");
+// console.log(taskList);
+//   Array.from(taskList.children).forEach((li) => {
+//     const taskText = li.querySelector("span").textContent.toLowerCase();
+//     if (taskText.includes(filterText)) {
+//       li.style.display = "";
+//     } else {
+//       li.style.display = "none";
+//     }
+//   });
+// }
+
 function filterTasks() {
   const filterInput = document.getElementById("filterInput");
   const filterText = filterInput.value.trim().toLowerCase();
   const taskList = document.getElementById("taskList");
-
+  console.log(taskList);
   Array.from(taskList.children).forEach((li) => {
     const taskText = li.querySelector("span").textContent.toLowerCase();
     if (taskText.includes(filterText)) {
@@ -119,9 +131,10 @@ function filterTasks() {
   });
 }
 
+
 function displayTasks(filter = "all") {
   let taskList = document.getElementById("taskList");
-  let filterText = filter;
+  // let filterText = filter;
 
   Array.from(taskList.children).forEach((item) => {
     let taskStatus = item.querySelector("#status").textContent;
@@ -142,9 +155,11 @@ function listUpdate(list) {
         item.completed
           ? "color: green; text-decoration: line-through;"
           : "color: red"
-      }' ondblclick="editTask(this)">${item.name}</span>
+      }' ondblclick="editTask('${item.name}')">${item.name}</span>
       <span id='status'>${item.completed ? "выполнено" : "не выполнено"}</span>
-      <button onclick="editTask(this)">Редактировать задачу</button>
+      <button id='editBtn' onclick="editTask('${
+        item.name
+      }')">Редактировать задачу(имя)</button>
       <button onclick="changeStatus('${item.name}')">Изменить статус</button>
       <button onclick="deleteTask('${item.name}')">Удалить</button>
     </li>`
@@ -152,3 +167,26 @@ function listUpdate(list) {
     .join("");
   document.querySelector("ul").innerHTML = html;
 }
+
+
+// function listUpdate(list) {
+//   const html = list
+//     .map(
+//       (item) => `<li>
+//       <span id='name' style='cursor: pointer; ${
+//         item.completed
+//           ? "color: green; text-decoration: line-through;"
+//           : "color: red"
+//       }' ondblclick="editTask(this)">${item.name}</span>
+//       <span id='status'>${item.completed ? "выполнено" : "не выполнено"}</span>
+//       <button id = 'editBtn' onclick="editTask(${
+//         item.name
+//       })">Редактировать задачу(имя)</button>
+      
+//       <button onclick="changeStatus('${item.name}')">Изменить статус</button>
+//       <button onclick="deleteTask('${item.name}')">Удалить</button>
+//     </li>`
+//     )
+//     .join("");
+//   document.querySelector("ul").innerHTML = html;
+// }
