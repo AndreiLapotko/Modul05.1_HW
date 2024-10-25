@@ -27,12 +27,12 @@
           <button onclick="displayTasks('all')">Показать все</button>
           <button onclick="displayTasks('выполнено')">Показать выполенные</button>
           <button onclick="displayTasks('не выполнено')">Показать не выполенные</button>
-          <input type='text' id='filterInput' placeholder="Фильтр задач" oninput="filterTasks()">
+          <input type='text' id='filterInput' placeholder="Фильтр задач" oninput="displayTasks()">
         </div>
 
         <div class="tasks">
           <h3>Список задач</h3>
-          <ul id='taskList'></ul>
+          <ul id='taskList' onmousedown="return false" onselectstart="return false"></ul>
         </div>
           <script src="script.js"></script>
       </section>

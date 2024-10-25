@@ -24,6 +24,17 @@ li {
   padding: 10px;
 }
 
+.mainMenu {
+  padding: 10px;
+}
+
+span, button {
+  margin-right: 20px;
+}
+
+.tasks :nth-child(odd) {
+    background-color: #f8f9fa;
+}
 .intro,
 .intro p,
 .intro h2 {
