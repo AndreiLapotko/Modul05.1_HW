@@ -72,14 +72,14 @@ function deleteTask(name) {
   }
 }
 
-function changeStatus(name) {
+function changeStatus(name, saveFilter) {
   if (!doesTaskExist(name, tasksList)) {
     alert("Задачи с таким названием нет в списке!");
   } else {
     tasksList[tasksList.findIndex((item) => item.name == name)].completed =
       !tasksList[tasksList.findIndex((item) => item.name == name)].completed;
     saveTasks(tasksList);
-    displayTasks();
+    displayTasks(saveFilter);
   }
 }
 
@@ -120,7 +120,7 @@ function displayTasks(filter = "all") {
     changeStatusBtn.textContent = "Изменить статус";
     changeStatusBtn.onclick = (event) => {
       event.stopPropagation();
-      changeStatus(task.name);
+      changeStatus(task.name, filter);
     };
 
     let delBtn = document.createElement("button");
