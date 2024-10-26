@@ -46,19 +46,23 @@ function doesTaskExist(name, list) {
   }
 }
 
-function editTask(name) {
+function editTask(name, saveFilter) {
   const newName = prompt("Введите новое значение задачи", name);
-  if (!newName) { // проверка на пустое значение
+  if (!newName) {
+    // проверка на пустое значение
     alert("Введите корректное значение, либо удалите задачу!");
     return;
   }
   if (doesTaskExist(newName, tasksList)) {
     alert("Задача с таким названием уже существует");
   } else {
-    tasksList[tasksList.findIndex((item) => item.name == name)].completed = false; // отредактированная задача считается не выполненной
-    tasksList[tasksList.findIndex((item) => item.name == name)].name = newName.trim();
+    tasksList[
+      tasksList.findIndex((item) => item.name == name)
+    ].completed = false; // отредактированная задача считается не выполненной
+    tasksList[tasksList.findIndex((item) => item.name == name)].name =
+      newName.trim();
     saveTasks(tasksList);
-    displayTasks();
+    displayTasks(saveFilter);
   }
 }
 
@@ -113,7 +117,7 @@ function displayTasks(filter = "all") {
     editBtn.textContent = "Редактировать";
     editBtn.onclick = (event) => {
       event.stopPropagation();
-      editTask(task.name);
+      editTask(task.name, filter);
     };
 
     let changeStatusBtn = document.createElement("button");
