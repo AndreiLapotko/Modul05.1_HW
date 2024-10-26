@@ -66,13 +66,13 @@ function editTask(name, saveFilter) {
   }
 }
 
-function deleteTask(name) {
+function deleteTask(name, saveFilter) {
   if (!doesTaskExist(name, tasksList)) {
     alert("Задачи с таким названием нет в списке!");
   } else {
     tasksList = tasksList.filter((item) => item.name !== name);
     saveTasks(tasksList);
-    displayTasks();
+    displayTasks(saveFilter);
   }
 }
 
@@ -131,7 +131,7 @@ function displayTasks(filter = "all") {
     delBtn.textContent = "Удалить";
     delBtn.onclick = (event) => {
       event.stopPropagation();
-      deleteTask(task.name);
+      deleteTask(task.name, filter);
     };
 
     listItem.appendChild(taskText);
